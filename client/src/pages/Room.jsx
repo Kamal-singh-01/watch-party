@@ -99,21 +99,21 @@ const Room = () => {
   }, [code, token]);
 
   return (
-    <div className="max-w-6xl mx-auto p-4">
-      <div className="flex justify-between items-center mb-3">
+    <div className="mx-auto max-w-[1500px] p-3 sm:p-6">
+      <div className="mb-5 flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
         <div>
-          <h1 className="text-xl font-bold">Room {code}</h1>
-          <p className="text-sm">
+          <p className="mb-1 text-xs font-bold uppercase tracking-[0.2em] text-indigo-600">Your watch party</p><h1 className="text-2xl font-extrabold tracking-tight text-slate-900">Room <span className="text-indigo-600">{code}</span></h1>
+          <p className="mt-1 text-sm text-slate-500">
             You are: <b>{role}</b> &middot; Share this page's link or the code with friends
           </p>
         </div>
-        <button className="border px-3 py-1" onClick={() => navigate('/')}>Leave</button>
+        <button className="rounded-xl border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-600 transition hover:border-red-200 hover:bg-red-50 hover:text-red-600" onClick={() => navigate('/')}>Leave room</button>
       </div>
 
-      {notice && <p className="border border-yellow-500 bg-yellow-50 p-2 mb-3 text-sm">{notice}</p>}
+      {notice && <p role="status" className="mb-4 rounded-xl border border-amber-200 bg-amber-50 p-3 text-sm text-amber-800">{notice}</p>}
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        <div className="lg:col-span-2">
+      <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
+        <div className="min-w-0 space-y-3 lg:col-span-2">
           {initial ? (
             <YouTubePlayer
               ref={playerRef}
@@ -124,13 +124,13 @@ const Room = () => {
               onSeek={(t) => send('seek', { time: t })}
             />
           ) : (
-            <div className="aspect-video border flex items-center justify-center">Joining room...</div>
+            <div className="flex aspect-video items-center justify-center rounded-2xl border border-slate-200 bg-slate-900 text-sm font-medium text-slate-300">Joining your watch party...</div>
           )}
-          {activity && <p className="text-sm mt-1 text-gray-600">Last action: {activity}</p>}
+          {activity && <p className="text-xs text-slate-500">Last activity: {activity}</p>}
           <Controls canControl={canControl} send={send} getTime={() => playerRef.current?.getTime() ?? 0} />
         </div>
 
-        <div className="flex flex-col gap-3">
+        <div className="flex min-w-0 flex-col gap-4">
           <ParticipantList participants={participants} meId={user.id} isHost={role === 'host'} send={send} />
           {canControl && <RequestsPanel requests={requests} send={send} />}
           <Chat messages={messages} send={send} />
