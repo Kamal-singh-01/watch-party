@@ -18,9 +18,19 @@ const CLIENT_URL = process.env.CLIENT_URL || "http://localhost:5173";
 
 const app = express();
 const server = http.createServer(app);
-const io = new Server(server, { cors: { origin: CLIENT_URL } });
+const io = new Server(server, {
+  cors: {
+    origin: CLIENT_URL,
+    methods: ["GET", "POST"],
+  },
+});
 
-app.use(cors({ origin: CLIENT_URL }));
+app.use(
+  cors({
+    origin: CLIENT_URL,
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  })
+);
 app.use(express.json());
 
 app.get("/health", (req, res) => res.json({ success: true }));

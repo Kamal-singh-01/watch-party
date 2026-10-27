@@ -33,7 +33,11 @@ const Room = () => {
   const send = (event, data) => socketRef.current?.emit(event, data);
 
   useEffect(() => {
-    const socket = io({ auth: { token } });
+    const SOCKET_URL = import.meta.env.VITE_API_URL;
+
+const socket = io(SOCKET_URL || undefined, {
+  auth: { token },
+});
     socketRef.current = socket;
 
     let noticeTimer;
