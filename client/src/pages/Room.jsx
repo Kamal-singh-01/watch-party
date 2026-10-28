@@ -33,12 +33,18 @@ const Room = () => {
   const send = (event, data) => socketRef.current?.emit(event, data);
 
   useEffect(() => {
-    const SOCKET_URL = import.meta.env.VITE_API_URL;
+     const SOCKET_URL = import.meta.env.VITE_API_URL;
 
-const socket = io(SOCKET_URL || undefined, {
-  auth: { token },
-});
-    socketRef.current = socket;
+  if (!SOCKET_URL) {
+    console.error("VITE_API_URL is missing. Cannot connect to Socket.IO.");
+    return;
+  }
+
+  const socket = io(SOCKET_URL, {
+    auth: { token },
+  });
+
+  socketRef.current = socket;
 
     let noticeTimer;
     const flash = (msg) => {
